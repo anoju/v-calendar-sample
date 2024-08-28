@@ -7,7 +7,7 @@
     @dayclick="selectDate"
     @popover-will-show="datepickerShow"
     @popover-will-hide="datepickerHide"
-    @update:pages="datepickerChange"
+    @did-move="datepickerChange"
   >
     <template v-slot="{ inputValue, inputEvents }">
       <div class="input">
@@ -65,63 +65,63 @@ export default {
     let datepickerEl = null
     const datepickerSetAria = () => {
       if (datepickerEl === null) return
-      const $prev = datepickerEl.querySelector('.vc-arrow.vc-prev')
-      if ($prev) $prev.title = '이전 달 보기'
-      const $next = datepickerEl.querySelector('.vc-arrow.vc-next')
-      if ($next) $next.title = '다음 달 보기'
-      const $title = datepickerEl.querySelector('.vc-title')
-      if ($title) $title.title = '월 선택'
-      const $highlight = datepickerEl.querySelector('.vc-highlight-content-solid')
-      if ($highlight) {
-        const $highlightLbl = $highlight.ariaLabel
-        $highlight.ariaLabel = $highlightLbl + ', 선택됨'
-      }
+      setTimeout(() => {
+        const $prev = datepickerEl.querySelector('.vc-arrow.vc-prev')
+        if ($prev) $prev.title = '이전 달 보기'
+        const $next = datepickerEl.querySelector('.vc-arrow.vc-next')
+        if ($next) $next.title = '다음 달 보기'
+        const $title = datepickerEl.querySelector('.vc-title')
+        if ($title) $title.title = '월 선택'
+        const $highlight = datepickerEl.querySelector('.vc-highlight-content-solid')
+        if ($highlight) {
+          const $highlightLbl = $highlight.ariaLabel
+          $highlight.ariaLabel = $highlightLbl + ', 선택됨'
+        }
 
-      const $navContainer = datepickerEl.querySelector('.vc-nav-popover-container')
-      if (!$navContainer) return
-      let isMonth = true
-      const $yearTitle = datepickerEl.querySelector('.vc-nav-title')
-      let $yearTitleTxt = null
-      if ($yearTitle) {
-        $yearTitleTxt = $yearTitle.textContent
-        if ($yearTitleTxt.length === 4) {
-          $yearTitle.title = '년도 선택'
-          isMonth = true
-        } else {
-          $yearTitle.title = '월 선택'
-          isMonth = false
+        const $navContainer = datepickerEl.querySelector('.vc-nav-popover-container')
+        if (!$navContainer) return
+        let isMonth = true
+        const $yearTitle = datepickerEl.querySelector('.vc-nav-title')
+        let $yearTitleTxt = null
+        if ($yearTitle) {
+          $yearTitleTxt = $yearTitle.textContent
+          if ($yearTitleTxt.length === 4) {
+            $yearTitle.title = '년도 선택'
+            isMonth = true
+          } else {
+            $yearTitle.title = '월 선택'
+            isMonth = false
+          }
         }
-      }
-      const $yearPrev = datepickerEl.querySelector('.vc-nav-arrow.is-left')
-      if ($yearPrev) {
-        if (isMonth) {
-          $yearPrev.title = '이전 년도 보기'
-        } else {
-          const $yTxt = adjustYearRange($yearTitleTxt, -12)
-          $yearPrev.title = '이전 ' + $yTxt + '년도 보기'
+        const $yearPrev = datepickerEl.querySelector('.vc-nav-arrow.is-left')
+        if ($yearPrev) {
+          if (isMonth) {
+            $yearPrev.title = '이전 년도 보기'
+          } else {
+            const $yTxt = adjustYearRange($yearTitleTxt, -12)
+            $yearPrev.title = '이전 ' + $yTxt + '년도 보기'
+          }
         }
-      }
-      const $yearNext = datepickerEl.querySelector('.vc-nav-arrow.is-right')
-      if ($yearNext) {
-        if (isMonth) {
-          $yearNext.title = '다음 년도 보기'
-        } else {
-          const $yTxt = adjustYearRange($yearTitleTxt, 12)
-          $yearNext.title = '다음 ' + $yTxt + '년도 보기'
+        const $yearNext = datepickerEl.querySelector('.vc-nav-arrow.is-right')
+        if ($yearNext) {
+          if (isMonth) {
+            $yearNext.title = '다음 년도 보기'
+          } else {
+            const $yTxt = adjustYearRange($yearTitleTxt, 12)
+            $yearNext.title = '다음 ' + $yTxt + '년도 보기'
+          }
         }
-      }
 
-      const $yearActive = datepickerEl.querySelector('.vc-nav-item.is-active')
-      if ($yearActive) {
-        const $yearActiveLbl = $yearActive.ariaLabel
-        $yearActive.ariaLabel = $yearActiveLbl + ', 선택됨'
-      }
+        const $yearActive = datepickerEl.querySelector('.vc-nav-item.is-active')
+        if ($yearActive) {
+          const $yearActiveLbl = $yearActive.ariaLabel
+          $yearActive.ariaLabel = $yearActiveLbl + ', 선택됨'
+        }
+      }, 1)
     }
 
     const datepickerClick = () => {
-      setTimeout(() => {
-        datepickerSetAria()
-      }, 1)
+      datepickerSetAria()
     }
 
     const datepickerShow = (el) => {
